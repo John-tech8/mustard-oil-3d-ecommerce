@@ -207,15 +207,10 @@
             </div>
             <div class="products-grid">
                 <!-- Product 1 -->
-                <div class="product-card" data-animate="fade-up" data-delay="0.1">
+                <div class="product-card" data-animate="fade-up" data-delay="0.1" data-name="Classic 500ml" data-price="299" data-size="500ml" data-img="images/products/pureharvest-500ml.png">
                     <div class="product-badge">Popular</div>
                     <div class="product-image">
-                        <div class="product-bottle" data-size="small">
-                            <div class="bottle-3d-placeholder">
-                                <i class="fas fa-wine-bottle"></i>
-                                <span>500ml</span>
-                            </div>
-                        </div>
+                        <img src="images/products/pureharvest-500ml.png" alt="PureHarvest Organic Mustard Oil 500ml" class="product-img">
                         <div class="product-glow"></div>
                     </div>
                     <div class="product-info">
@@ -237,25 +232,17 @@
                             <span class="product-mrp">₹449</span>
                             <span class="product-discount">33% OFF</span>
                         </div>
-                        <button class="btn-add-cart" onclick="addToCart('Classic 500ml', 299)">
+                        <button class="btn-add-cart" onclick="event.stopPropagation(); addToCart('Classic 500ml', 299)">
                             <i class="fas fa-shopping-cart"></i> Add to Cart
                         </button>
-                    </div>
-                    <div class="product-quick-view" onclick="quickView('Classic 500ml', 299, '500ml')">
-                        <i class="fas fa-eye"></i> Quick View
                     </div>
                 </div>
 
                 <!-- Product 2 -->
-                <div class="product-card" data-animate="fade-up" data-delay="0.2">
+                <div class="product-card" data-animate="fade-up" data-delay="0.2" data-name="Premium 1 Litre" data-price="549" data-size="1 Litre" data-img="images/products/pureharvest-1litre.png">
                     <div class="product-badge best-seller">Best Seller</div>
                     <div class="product-image">
-                        <div class="product-bottle" data-size="medium">
-                            <div class="bottle-3d-placeholder">
-                                <i class="fas fa-wine-bottle"></i>
-                                <span>1 Litre</span>
-                            </div>
-                        </div>
+                        <img src="images/products/pureharvest-1litre.png" alt="PureHarvest Organic Mustard Oil 1 Litre" class="product-img">
                         <div class="product-glow"></div>
                     </div>
                     <div class="product-info">
@@ -277,25 +264,17 @@
                             <span class="product-mrp">₹799</span>
                             <span class="product-discount">31% OFF</span>
                         </div>
-                        <button class="btn-add-cart" onclick="addToCart('Premium 1 Litre', 549)">
+                        <button class="btn-add-cart" onclick="event.stopPropagation(); addToCart('Premium 1 Litre', 549)">
                             <i class="fas fa-shopping-cart"></i> Add to Cart
                         </button>
-                    </div>
-                    <div class="product-quick-view" onclick="quickView('Premium 1 Litre', 549, '1 Litre')">
-                        <i class="fas fa-eye"></i> Quick View
                     </div>
                 </div>
 
                 <!-- Product 3 -->
-                <div class="product-card" data-animate="fade-up" data-delay="0.3">
+                <div class="product-card" data-animate="fade-up" data-delay="0.3" data-name="Family Pack 5L" data-price="2199" data-size="5 Litre" data-img="images/products/pureharvest-5litre.png">
                     <div class="product-badge family-pack">Family Pack</div>
                     <div class="product-image">
-                        <div class="product-bottle" data-size="large">
-                            <div class="bottle-3d-placeholder">
-                                <i class="fas fa-wine-bottle"></i>
-                                <span>5 Litre</span>
-                            </div>
-                        </div>
+                        <img src="images/products/pureharvest-5litre.png" alt="PureHarvest Organic Mustard Oil 5 Litre Family Pack" class="product-img">
                         <div class="product-glow"></div>
                     </div>
                     <div class="product-info">
@@ -317,12 +296,9 @@
                             <span class="product-mrp">₹3,499</span>
                             <span class="product-discount">37% OFF</span>
                         </div>
-                        <button class="btn-add-cart" onclick="addToCart('Family Pack 5L', 2199)">
+                        <button class="btn-add-cart" onclick="event.stopPropagation(); addToCart('Family Pack 5L', 2199)">
                             <i class="fas fa-shopping-cart"></i> Add to Cart
                         </button>
-                    </div>
-                    <div class="product-quick-view" onclick="quickView('Family Pack 5L', 2199, '5 Litre')">
-                        <i class="fas fa-eye"></i> Quick View
                     </div>
                 </div>
             </div>
@@ -573,10 +549,7 @@
             <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
             <div class="modal-body">
                 <div class="modal-image">
-                    <div class="bottle-3d-placeholder large">
-                        <i class="fas fa-wine-bottle"></i>
-                        <span id="modalSize">500ml</span>
-                    </div>
+                    <img src="images/products/pureharvest-500ml.png" alt="Product Image" class="modal-product-img" id="modalImg">
                 </div>
                 <div class="modal-info">
                     <h2 id="modalName">Product Name</h2>

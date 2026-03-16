@@ -689,11 +689,17 @@ function checkout() {
 }
 
 // ===== QUICK VIEW MODAL =====
-function quickView(name, price, size) {
+function quickView(name, price, size, imgSrc) {
     const modal = document.getElementById('quickViewModal');
     document.getElementById('modalName').textContent = name;
     document.getElementById('modalPrice').textContent = `₹${price.toLocaleString()}`;
-    document.getElementById('modalSize').textContent = size;
+    
+    // Update modal image
+    const modalImg = document.getElementById('modalImg');
+    if (imgSrc && modalImg) {
+        modalImg.src = imgSrc;
+        modalImg.alt = name;
+    }
 
     const modalCartBtn = document.getElementById('modalCartBtn');
     modalCartBtn.onclick = () => {
@@ -748,4 +754,21 @@ document.addEventListener('DOMContentLoaded', () => {
     createHeroParticles();
     initBottle3D();
     initTestimonialsSlider();
+    initProductCardClicks();
 });
+
+// ===== PRODUCT CARD CLICK-TO-MODAL =====
+function initProductCardClicks() {
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+            // Don't open modal if Add to Cart was clicked
+            if (e.target.closest('.btn-add-cart')) return;
+            
+            const name = card.dataset.name;
+            const price = parseInt(card.dataset.price);
+            const size = card.dataset.size;
+            const img = card.dataset.img;
+            quickView(name, price, size, img);
+        });
+    });
+}
