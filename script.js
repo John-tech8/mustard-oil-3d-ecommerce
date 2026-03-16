@@ -761,8 +761,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function initProductCardClicks() {
     document.querySelectorAll('.product-card').forEach(card => {
         card.addEventListener('click', (e) => {
-            // Don't open modal if Add to Cart was clicked
-            if (e.target.closest('.btn-add-cart')) return;
+            // Don't open modal if Add to Cart or View Animation was clicked
+            if (e.target.closest('.btn-add-cart') || e.target.closest('.btn-view-animation')) return;
             
             const name = card.dataset.name;
             const price = parseInt(card.dataset.price);
@@ -772,3 +772,432 @@ function initProductCardClicks() {
         });
     });
 }
+
+// ===== 3D PRODUCT VIEWER =====
+let viewer3dScene, viewer3dCamera, viewer3dRenderer, viewer3dControls;
+let viewer3dAnimationId = null;
+let viewer3dMesh = null;
+let viewer3dParticles = null;
+let viewer3dResizeHandler = null;
+
+// Bottle dimension configs per product size
+const BOTTLE_CONFIGS = {
+    '500ml': {
+        bodyRadius: 0.55, bodyHeight: 2.4,
+        neckRadius: 0.22, neckHeight: 0.9,
+        shoulderHeight: 0.35,
+        capRadius: 0.25, capHeight: 0.35,
+        labelHeight: 1.3, labelOffset: -0.1,
+        oilLevel: 2.1, scale: 1.0
+    },
+    '1litre': {
+        bodyRadius: 0.65, bodyHeight: 3.0,
+        neckRadius: 0.25, neckHeight: 1.0,
+        shoulderHeight: 0.4,
+        capRadius: 0.28, capHeight: 0.38,
+        labelHeight: 1.5, labelOffset: -0.1,
+        oilLevel: 2.6, scale: 1.0
+    },
+    '5litre': {
+        bodyRadius: 0.9, bodyHeight: 2.8,
+        neckRadius: 0.3, neckHeight: 0.7,
+        shoulderHeight: 0.35,
+        capRadius: 0.33, capHeight: 0.4,
+        labelHeight: 1.6, labelOffset: -0.1,
+        oilLevel: 2.5, scale: 1.0,
+        isCanister: true
+    }
+};
+
+function open3DViewer(sizeKey, productName, imagePath) {
+    const overlay = document.getElementById('viewer3dOverlay');
+    const canvas = document.getElementById('viewer3dCanvas');
+    const titleEl = document.getElementById('viewer3dTitle');
+
+    titleEl.innerHTML = `<i class="fas fa-cube"></i> ${productName} — 3D View`;
+
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(() => {
+        init3DScene(canvas, sizeKey, imagePath);
+    }, 150);
+}
+
+function createBottleGeometry(scene, config, imagePath, renderer) {
+    const bottleGroup = new THREE.Group();
+
+    // ===== GLASS BODY =====
+    const bodyGeo = config.isCanister
+        ? new THREE.BoxGeometry(config.bodyRadius * 1.8, config.bodyHeight, config.bodyRadius * 1.4, 4, 4, 4)
+        : new THREE.CylinderGeometry(config.bodyRadius, config.bodyRadius + 0.05, config.bodyHeight, 48, 1, false);
+    
+    const glassMat = new THREE.MeshPhysicalMaterial({
+        color: config.isCanister ? 0xD4A012 : 0xC8960E,
+        metalness: config.isCanister ? 0.7 : 0.05,
+        roughness: config.isCanister ? 0.35 : 0.08,
+        transmission: config.isCanister ? 0.0 : 0.65,
+        thickness: config.isCanister ? 0.0 : 1.8,
+        transparent: true,
+        opacity: config.isCanister ? 1.0 : 0.82,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.05,
+        ior: 1.5,
+        envMapIntensity: 1.2,
+        side: config.isCanister ? THREE.FrontSide : THREE.DoubleSide,
+    });
+    const body = new THREE.Mesh(bodyGeo, glassMat);
+    body.castShadow = true;
+    body.receiveShadow = true;
+    bottleGroup.add(body);
+
+    // ===== OIL FILL (inside glass) =====
+    if (!config.isCanister) {
+        const oilGeo = new THREE.CylinderGeometry(
+            config.bodyRadius - 0.06,
+            config.bodyRadius - 0.02,
+            config.oilLevel,
+            48
+        );
+        const oilMat = new THREE.MeshPhysicalMaterial({
+            color: 0xD4A012,
+            metalness: 0.0,
+            roughness: 0.05,
+            transmission: 0.75,
+            thickness: 2.5,
+            transparent: true,
+            opacity: 0.5,
+            ior: 1.47,
+        });
+        const oil = new THREE.Mesh(oilGeo, oilMat);
+        oil.position.y = -(config.bodyHeight - config.oilLevel) / 2 + 0.05;
+        bottleGroup.add(oil);
+    }
+
+    // ===== SHOULDER =====
+    const shoulderGeo = config.isCanister
+        ? new THREE.BoxGeometry(config.bodyRadius * 1.8, config.shoulderHeight, config.bodyRadius * 1.4)
+        : new THREE.CylinderGeometry(
+            config.neckRadius + 0.08,
+            config.bodyRadius,
+            config.shoulderHeight,
+            48
+        );
+    const shoulderMat = config.isCanister ? glassMat.clone() : glassMat.clone();
+    const shoulder = new THREE.Mesh(shoulderGeo, shoulderMat);
+    shoulder.position.y = config.bodyHeight / 2 + config.shoulderHeight / 2;
+    bottleGroup.add(shoulder);
+
+    // ===== NECK =====
+    const neckGeo = config.isCanister
+        ? new THREE.CylinderGeometry(config.neckRadius, config.neckRadius + 0.05, config.neckHeight, 32)
+        : new THREE.CylinderGeometry(config.neckRadius, config.neckRadius + 0.08, config.neckHeight, 48);
+    const neckMat = config.isCanister
+        ? new THREE.MeshPhysicalMaterial({
+              color: 0xB8860B,
+              metalness: 0.7,
+              roughness: 0.3,
+              clearcoat: 0.5,
+          })
+        : glassMat.clone();
+    const neck = new THREE.Mesh(neckGeo, neckMat);
+    neck.position.y = config.bodyHeight / 2 + config.shoulderHeight + config.neckHeight / 2;
+    bottleGroup.add(neck);
+
+    // ===== CAP =====
+    const capGeo = new THREE.CylinderGeometry(config.capRadius, config.capRadius, config.capHeight, 32);
+    const capMat = new THREE.MeshPhysicalMaterial({
+        color: 0x1B4332,
+        metalness: 0.6,
+        roughness: 0.2,
+        clearcoat: 0.9,
+    });
+    const cap = new THREE.Mesh(capGeo, capMat);
+    const capY = config.bodyHeight / 2 + config.shoulderHeight + config.neckHeight + config.capHeight / 2 - 0.02;
+    cap.position.y = capY;
+    cap.castShadow = true;
+    bottleGroup.add(cap);
+
+    // ===== GOLD RING (between neck and cap) =====
+    const ringGeo = new THREE.TorusGeometry(config.capRadius + 0.02, 0.03, 12, 36);
+    const ringMat = new THREE.MeshPhysicalMaterial({
+        color: 0xFFD700,
+        metalness: 0.95,
+        roughness: 0.05,
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.position.y = config.bodyHeight / 2 + config.shoulderHeight + config.neckHeight - 0.02;
+    ring.rotation.x = Math.PI / 2;
+    bottleGroup.add(ring);
+
+    // ===== BOTTOM =====
+    const bottomGeo = config.isCanister
+        ? new THREE.BoxGeometry(config.bodyRadius * 1.8, 0.08, config.bodyRadius * 1.4)
+        : new THREE.CylinderGeometry(config.bodyRadius + 0.05, config.bodyRadius + 0.02, 0.1, 48);
+    const bottomMat = new THREE.MeshPhysicalMaterial({
+        color: config.isCanister ? 0xB8860B : 0xC8960E,
+        metalness: config.isCanister ? 0.7 : 0.1,
+        roughness: 0.2,
+        clearcoat: 0.5,
+    });
+    const bottom = new THREE.Mesh(bottomGeo, bottomMat);
+    bottom.position.y = -config.bodyHeight / 2 - 0.04;
+    bottleGroup.add(bottom);
+
+    // ===== HANDLE (for 5L canister) =====
+    if (config.isCanister) {
+        const handleCurve = new THREE.CatmullRomCurve3([
+            new THREE.Vector3(-0.25, capY + 0.15, 0),
+            new THREE.Vector3(-0.25, capY + 0.55, 0),
+            new THREE.Vector3(0.25, capY + 0.55, 0),
+            new THREE.Vector3(0.25, capY + 0.15, 0),
+        ]);
+        const handleGeo = new THREE.TubeGeometry(handleCurve, 20, 0.04, 8, false);
+        const handleMat = new THREE.MeshPhysicalMaterial({
+            color: 0xB8860B,
+            metalness: 0.8,
+            roughness: 0.2,
+        });
+        const handle = new THREE.Mesh(handleGeo, handleMat);
+        bottleGroup.add(handle);
+    }
+
+    // ===== LABEL with product image =====
+    const textureLoader = new THREE.TextureLoader();
+    textureLoader.load(imagePath, (texture) => {
+        texture.minFilter = THREE.LinearMipmapLinearFilter;
+        texture.magFilter = THREE.LinearFilter;
+        if (renderer) {
+            texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+        }
+
+        if (config.isCanister) {
+            // For canister: flat label on front and back
+            const labelGeo = new THREE.PlaneGeometry(
+                config.bodyRadius * 1.6,
+                config.labelHeight
+            );
+            const labelMat = new THREE.MeshStandardMaterial({
+                map: texture,
+                transparent: true,
+                side: THREE.FrontSide,
+                roughness: 0.35,
+                metalness: 0.0,
+            });
+            const frontLabel = new THREE.Mesh(labelGeo, labelMat);
+            frontLabel.position.y = config.labelOffset;
+            frontLabel.position.z = config.bodyRadius * 0.71;
+            bottleGroup.add(frontLabel);
+
+            const backLabel = new THREE.Mesh(labelGeo, labelMat.clone());
+            backLabel.position.y = config.labelOffset;
+            backLabel.position.z = -config.bodyRadius * 0.71;
+            backLabel.rotation.y = Math.PI;
+            bottleGroup.add(backLabel);
+        } else {
+            // For bottles: cylindrical wraparound label
+            const labelGeo = new THREE.CylinderGeometry(
+                config.bodyRadius + 0.06,
+                config.bodyRadius + 0.1,
+                config.labelHeight,
+                48, 1, true,
+                -Math.PI * 0.7, Math.PI * 1.4
+            );
+            const labelMat = new THREE.MeshStandardMaterial({
+                map: texture,
+                transparent: true,
+                side: THREE.DoubleSide,
+                roughness: 0.35,
+                metalness: 0.0,
+            });
+            const label = new THREE.Mesh(labelGeo, labelMat);
+            label.position.y = config.labelOffset;
+            bottleGroup.add(label);
+        }
+    });
+
+    // Center the bottle vertically
+    const totalH = config.bodyHeight / 2 + config.shoulderHeight + config.neckHeight + config.capHeight;
+    bottleGroup.position.y = -(totalH / 2) + config.bodyHeight / 4;
+
+    scene.add(bottleGroup);
+    return bottleGroup;
+}
+
+function init3DScene(canvas, sizeKey, imagePath) {
+    cleanup3DViewer();
+
+    const config = BOTTLE_CONFIGS[sizeKey] || BOTTLE_CONFIGS['500ml'];
+    const wrap = canvas.parentElement;
+    const width = wrap.clientWidth;
+    const height = wrap.clientHeight;
+
+    // Scene
+    viewer3dScene = new THREE.Scene();
+
+    // Camera
+    viewer3dCamera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
+    viewer3dCamera.position.set(0, 0.5, 5.5);
+
+    // Renderer
+    viewer3dRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    viewer3dRenderer.setSize(width, height);
+    viewer3dRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    viewer3dRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+    viewer3dRenderer.toneMappingExposure = 1.4;
+    viewer3dRenderer.shadowMap.enabled = true;
+    viewer3dRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+    // ===== PREMIUM LIGHTING =====
+    // Key light (warm white, from top-right)
+    const keyLight = new THREE.DirectionalLight(0xFFF8E7, 1.2);
+    keyLight.position.set(4, 8, 5);
+    keyLight.castShadow = true;
+    viewer3dScene.add(keyLight);
+
+    // Fill light (soft warm, from left)
+    const fillLight = new THREE.DirectionalLight(0xD4A012, 0.5);
+    fillLight.position.set(-4, 3, -3);
+    viewer3dScene.add(fillLight);
+
+    // Ambient fill (soft overall)
+    const ambientLight = new THREE.AmbientLight(0xFAF3E0, 0.55);
+    viewer3dScene.add(ambientLight);
+
+    // Rim light (green accent, behind)
+    const rimLight = new THREE.PointLight(0x52B788, 0.5, 12);
+    rimLight.position.set(-2, 2, -5);
+    viewer3dScene.add(rimLight);
+
+    // Top spot (golden highlight)
+    const spotLight = new THREE.SpotLight(0xFFD700, 0.7, 20, Math.PI / 5, 0.5);
+    spotLight.position.set(0, 8, 3);
+    viewer3dScene.add(spotLight);
+
+    // Bottom bounce light
+    const bounceLight = new THREE.PointLight(0xD4A012, 0.25, 8);
+    bounceLight.position.set(0, -3, 2);
+    viewer3dScene.add(bounceLight);
+
+    // ===== CREATE BOTTLE =====
+    viewer3dMesh = createBottleGeometry(viewer3dScene, config, imagePath, viewer3dRenderer);
+
+    // ===== GOLDEN PARTICLES =====
+    const pCount = 60;
+    const pGeo = new THREE.BufferGeometry();
+    const pPos = new Float32Array(pCount * 3);
+    for (let i = 0; i < pCount * 3; i++) {
+        pPos[i] = (Math.random() - 0.5) * 12;
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+    const pMat = new THREE.PointsMaterial({
+        size: 0.03,
+        color: 0xD4A012,
+        transparent: true,
+        opacity: 0.45,
+    });
+    viewer3dParticles = new THREE.Points(pGeo, pMat);
+    viewer3dScene.add(viewer3dParticles);
+
+    // ===== ORBIT CONTROLS =====
+    viewer3dControls = new THREE.OrbitControls(viewer3dCamera, canvas);
+    viewer3dControls.enableDamping = true;
+    viewer3dControls.dampingFactor = 0.06;
+    viewer3dControls.enableZoom = true;
+    viewer3dControls.minDistance = 3;
+    viewer3dControls.maxDistance = 8;
+    viewer3dControls.enablePan = false;
+    viewer3dControls.autoRotate = true;
+    viewer3dControls.autoRotateSpeed = 2.5;
+    viewer3dControls.target.set(0, 0.3, 0);
+    viewer3dControls.update();
+
+    // Resize handler
+    viewer3dResizeHandler = () => {
+        const w = wrap.clientWidth;
+        const h = wrap.clientHeight;
+        viewer3dCamera.aspect = w / h;
+        viewer3dCamera.updateProjectionMatrix();
+        viewer3dRenderer.setSize(w, h);
+    };
+    window.addEventListener('resize', viewer3dResizeHandler);
+
+    // ===== ANIMATION LOOP =====
+    let time = 0;
+    function animate3D() {
+        viewer3dAnimationId = requestAnimationFrame(animate3D);
+        time += 0.016;
+
+        // Floating effect on bottle
+        if (viewer3dMesh) {
+            viewer3dMesh.position.y += (Math.sin(time * 1.0) * 0.06 - viewer3dMesh.position.y) * 0.03;
+        }
+
+        // Particles gentle drift
+        if (viewer3dParticles) {
+            viewer3dParticles.rotation.y += 0.0008;
+            viewer3dParticles.rotation.x += 0.0002;
+        }
+
+        // Animated rim light orbit
+        rimLight.position.x = Math.sin(time * 0.5) * 4;
+        rimLight.position.z = Math.cos(time * 0.5) * 4;
+
+        viewer3dControls.update();
+        viewer3dRenderer.render(viewer3dScene, viewer3dCamera);
+    }
+    animate3D();
+}
+
+function cleanup3DViewer() {
+    if (viewer3dAnimationId) {
+        cancelAnimationFrame(viewer3dAnimationId);
+        viewer3dAnimationId = null;
+    }
+    if (viewer3dControls) {
+        viewer3dControls.dispose();
+        viewer3dControls = null;
+    }
+    if (viewer3dRenderer) {
+        viewer3dRenderer.dispose();
+    }
+    if (viewer3dScene) {
+        viewer3dScene.traverse((obj) => {
+            if (obj.geometry) obj.geometry.dispose();
+            if (obj.material) {
+                if (obj.material.map) obj.material.map.dispose();
+                obj.material.dispose();
+            }
+        });
+    }
+    if (viewer3dResizeHandler) {
+        window.removeEventListener('resize', viewer3dResizeHandler);
+        viewer3dResizeHandler = null;
+    }
+    viewer3dScene = null;
+    viewer3dCamera = null;
+    viewer3dMesh = null;
+    viewer3dParticles = null;
+}
+
+function close3DViewer() {
+    const overlay = document.getElementById('viewer3dOverlay');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+    setTimeout(() => { cleanup3DViewer(); }, 500);
+}
+
+// Close on overlay click
+document.getElementById('viewer3dOverlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) close3DViewer();
+});
+
+// Close on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        const overlay = document.getElementById('viewer3dOverlay');
+        if (overlay.classList.contains('active')) {
+            close3DViewer();
+        }
+    }
+});

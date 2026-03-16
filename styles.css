@@ -982,7 +982,165 @@ button {
     box-shadow: 0 8px 25px rgba(45,106,79,0.35);
 }
 
+/* View Animation Button */
+.btn-view-animation {
+    width: 100%;
+    padding: 12px;
+    background: var(--gradient-mustard);
+    color: var(--green-dark);
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+}
 
+.btn-view-animation:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212,160,18,0.4);
+}
+
+.btn-view-animation i {
+    font-size: 1rem;
+}
+
+/* ===== 3D VIEWER MODAL ===== */
+.viewer3d-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 4000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.viewer3d-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.viewer3d-modal {
+    background: var(--gray-900);
+    border-radius: var(--radius-xl);
+    width: 90%;
+    max-width: 750px;
+    overflow: hidden;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5), 0 0 60px rgba(212, 160, 18, 0.15);
+    transform: scale(0.85) translateY(30px);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(212, 160, 18, 0.2);
+}
+
+.viewer3d-overlay.active .viewer3d-modal {
+    transform: scale(1) translateY(0);
+}
+
+.viewer3d-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    background: linear-gradient(135deg, rgba(27, 67, 50, 0.9), rgba(26, 26, 26, 0.95));
+    border-bottom: 1px solid rgba(212, 160, 18, 0.2);
+}
+
+.viewer3d-header h3 {
+    color: var(--cream);
+    font-size: 1.1rem;
+    font-family: var(--font-display);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.viewer3d-header h3 i {
+    color: var(--mustard-light);
+}
+
+.viewer3d-close {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.viewer3d-close:hover {
+    background: rgba(229, 62, 62, 0.8);
+    color: var(--white);
+    transform: rotate(90deg);
+}
+
+.viewer3d-canvas-wrap {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    background: radial-gradient(ellipse at center, #1a2a20 0%, #111 70%);
+}
+
+#viewer3dCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: grab;
+}
+
+#viewer3dCanvas:active {
+    cursor: grabbing;
+}
+
+.viewer3d-hint {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+    animation: hintPulse 2s ease-in-out infinite;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .viewer3d-modal {
+        width: 95%;
+        max-width: 95%;
+    }
+    .viewer3d-canvas-wrap {
+        height: 350px;
+    }
+    .viewer3d-header {
+        padding: 14px 18px;
+    }
+    .viewer3d-header h3 {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .viewer3d-canvas-wrap {
+        height: 280px;
+    }
+}
 
 /* ===== BENEFITS SECTION ===== */
 .benefits-section {
