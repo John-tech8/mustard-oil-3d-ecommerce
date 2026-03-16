@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pure Harvest – 100% Organic Mustard Oil | Farm to Kitchen</title>
+    <meta name="description" content="Experience the finest cold-pressed organic mustard oil. Pure, chemical-free, and rich in Omega 3 & 6. Shop premium quality mustard oil online.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader">
+            <div class="loader-drop"></div>
+            <p class="loader-text">Pure Harvest</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon"><i class="fas fa-seedling"></i></span>
+                <span class="logo-text">Pure<span class="logo-highlight">Harvest</span></span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#journey" class="nav-link">Our Story</a></li>
+                <li><a href="#products" class="nav-link">Shop</a></li>
+                <li><a href="#benefits" class="nav-link">Benefits</a></li>
+                <li><a href="#testimonials" class="nav-link">Reviews</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="cart-btn" id="cartBtn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-bg-particles" id="heroParticles"></div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge" data-animate="fade-up">
+                    <i class="fas fa-leaf"></i> 100% Organic & Natural
+                </div>
+                <h1 class="hero-title" data-animate="fade-up" data-delay="0.1">
+                    Pure Organic<br>
+                    <span class="text-gradient">Mustard Oil</span>
+                </h1>
+                <p class="hero-subtitle" data-animate="fade-up" data-delay="0.2">
+                    From Farm to Your Kitchen — Cold pressed with love, 
+                    preserving the authentic taste and nutrition of traditional mustard oil.
+                </p>
+                <div class="hero-features" data-animate="fade-up" data-delay="0.3">
+                    <div class="hero-feature">
+                        <i class="fas fa-check-circle"></i> Pure & Organic
+                    </div>
+                    <div class="hero-feature">
+                        <i class="fas fa-check-circle"></i> Cold Pressed
+                    </div>
+                    <div class="hero-feature">
+                        <i class="fas fa-check-circle"></i> No Chemicals
+                    </div>
+                    <div class="hero-feature">
+                        <i class="fas fa-check-circle"></i> Traditional Taste
+                    </div>
+                </div>
+                <div class="hero-buttons" data-animate="fade-up" data-delay="0.4">
+                    <a href="#products" class="btn btn-primary">
+                        <i class="fas fa-shopping-cart"></i> Shop Now
+                    </a>
+                    <a href="#about" class="btn btn-outline">
+                        <i class="fas fa-play-circle"></i> Explore Product
+                    </a>
+                </div>
+            </div>
+            <div class="hero-3d" data-animate="fade-left">
+                <canvas id="bottleCanvas"></canvas>
+                <div class="drag-hint" id="dragHint">
+                    <i class="fas fa-hand-pointer"></i> Drag to Rotate
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-wheel"></div>
+            </div>
+            <span>Scroll to Explore</span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag"><i class="fas fa-leaf"></i> About Our Product</span>
+                <h2 class="section-title">Nature's Finest <span class="text-gradient">Mustard Oil</span></h2>
+                <p class="section-desc">Discover the purest form of mustard oil, extracted using traditional cold-press methods that preserve every drop of natural goodness.</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-card" data-animate="fade-up" data-delay="0.1">
+                    <div class="about-card-icon">
+                        <i class="fas fa-compress-alt"></i>
+                    </div>
+                    <h3>Cold Pressed Extraction</h3>
+                    <p>Our oil is extracted at low temperatures using traditional wooden ghani, preserving natural nutrients, flavor, and aroma without any heat damage.</p>
+                </div>
+                <div class="about-card" data-animate="fade-up" data-delay="0.2">
+                    <div class="about-card-icon">
+                        <i class="fas fa-tractor"></i>
+                    </div>
+                    <h3>Natural Farming</h3>
+                    <p>Sourced from certified organic farms where mustard is grown without pesticides, herbicides, or synthetic fertilizers — just pure sunshine and soil.</p>
+                </div>
+                <div class="about-card" data-animate="fade-up" data-delay="0.3">
+                    <div class="about-card-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>Chemical Free Production</h3>
+                    <p>Zero chemicals at every stage. No refining, no bleaching, no deodorizing. What you get is 100% raw, unprocessed mustard oil.</p>
+                </div>
+                <div class="about-card" data-animate="fade-up" data-delay="0.4">
+                    <div class="about-card-icon">
+                        <i class="fas fa-dna"></i>
+                    </div>
+                    <h3>Rich in Omega 3 & 6</h3>
+                    <p>Packed with essential fatty acids including Omega 3 and Omega 6, vital for heart health, brain function, and overall well-being.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Journey Section -->
+    <section id="journey" class="journey-section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag"><i class="fas fa-route"></i> Our Story</span>
+                <h2 class="section-title">Farm to <span class="text-gradient">Bottle</span> Journey</h2>
+                <p class="section-desc">Every bottle tells a story of purity, tradition, and care. Follow the journey from our organic farms to your kitchen table.</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item" data-animate="fade-right" data-delay="0.1">
+                    <div class="timeline-icon"><i class="fas fa-seedling"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-step">Step 01</div>
+                        <h3>Organic Farm</h3>
+                        <p>Mustard seeds are cultivated in rich, organic farmlands using sustainable agricultural practices with zero chemical interventions.</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-animate="fade-left" data-delay="0.2">
+                    <div class="timeline-icon"><i class="fas fa-spa"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-step">Step 02</div>
+                        <h3>Mustard Seeds</h3>
+                        <p>Premium quality mustard seeds are carefully handpicked, sorted, and cleaned to ensure only the finest seeds make it to production.</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-animate="fade-right" data-delay="0.3">
+                    <div class="timeline-icon"><i class="fas fa-cogs"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-step">Step 03</div>
+                        <h3>Cold Press Extraction</h3>
+                        <p>Seeds are cold-pressed using traditional wooden ghani method at controlled temperatures, preserving all natural nutrients and authentic flavor.</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-animate="fade-left" data-delay="0.4">
+                    <div class="timeline-icon"><i class="fas fa-wine-bottle"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-step">Step 04</div>
+                        <h3>Bottling</h3>
+                        <p>The pure oil is filtered naturally and bottled in food-grade, UV-protective packaging under hygienic conditions to maintain freshness.</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-animate="fade-right" data-delay="0.5">
+                    <div class="timeline-icon"><i class="fas fa-truck"></i></div>
+                    <div class="timeline-content">
+                        <div class="timeline-step">Step 05</div>
+                        <h3>Delivery</h3>
+                        <p>Carefully packed and shipped directly to your doorstep, ensuring the oil reaches you in its purest, freshest form.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag"><i class="fas fa-store"></i> Our Products</span>
+                <h2 class="section-title">Premium <span class="text-gradient">Collection</span></h2>
+                <p class="section-desc">Choose from our carefully curated range of organic mustard oil, available in convenient sizes for every need.</p>
+            </div>
+            <div class="products-grid">
+                <!-- Product 1 -->
+                <div class="product-card" data-animate="fade-up" data-delay="0.1">
+                    <div class="product-badge">Popular</div>
+                    <div class="product-image">
+                        <div class="product-bottle" data-size="small">
+                            <div class="bottle-3d-placeholder">
+                                <i class="fas fa-wine-bottle"></i>
+                                <span>500ml</span>
+                            </div>
+                        </div>
+                        <div class="product-glow"></div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Classic 500ml</h3>
+                        <p class="product-desc">Perfect for daily cooking. Pure cold-pressed organic mustard oil.</p>
+                        <div class="product-meta">
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>(128)</span>
+                            </div>
+                            <span class="product-weight">500ml</span>
+                        </div>
+                        <div class="product-pricing">
+                            <span class="product-price">₹299</span>
+                            <span class="product-mrp">₹449</span>
+                            <span class="product-discount">33% OFF</span>
+                        </div>
+                        <button class="btn-add-cart" onclick="addToCart('Classic 500ml', 299)">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                    <div class="product-quick-view" onclick="quickView('Classic 500ml', 299, '500ml')">
+                        <i class="fas fa-eye"></i> Quick View
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card" data-animate="fade-up" data-delay="0.2">
+                    <div class="product-badge best-seller">Best Seller</div>
+                    <div class="product-image">
+                        <div class="product-bottle" data-size="medium">
+                            <div class="bottle-3d-placeholder">
+                                <i class="fas fa-wine-bottle"></i>
+                                <span>1 Litre</span>
+                            </div>
+                        </div>
+                        <div class="product-glow"></div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Premium 1 Litre</h3>
+                        <p class="product-desc">Our best-selling size. Great value for regular mustard oil lovers.</p>
+                        <div class="product-meta">
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>(256)</span>
+                            </div>
+                            <span class="product-weight">1 Litre</span>
+                        </div>
+                        <div class="product-pricing">
+                            <span class="product-price">₹549</span>
+                            <span class="product-mrp">₹799</span>
+                            <span class="product-discount">31% OFF</span>
+                        </div>
+                        <button class="btn-add-cart" onclick="addToCart('Premium 1 Litre', 549)">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                    <div class="product-quick-view" onclick="quickView('Premium 1 Litre', 549, '1 Litre')">
+                        <i class="fas fa-eye"></i> Quick View
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card" data-animate="fade-up" data-delay="0.3">
+                    <div class="product-badge family-pack">Family Pack</div>
+                    <div class="product-image">
+                        <div class="product-bottle" data-size="large">
+                            <div class="bottle-3d-placeholder">
+                                <i class="fas fa-wine-bottle"></i>
+                                <span>5 Litre</span>
+                            </div>
+                        </div>
+                        <div class="product-glow"></div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Family Pack 5L</h3>
+                        <p class="product-desc">Economy family pack. Best value for households that love pure mustard oil.</p>
+                        <div class="product-meta">
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span>(89)</span>
+                            </div>
+                            <span class="product-weight">5 Litre</span>
+                        </div>
+                        <div class="product-pricing">
+                            <span class="product-price">₹2,199</span>
+                            <span class="product-mrp">₹3,499</span>
+                            <span class="product-discount">37% OFF</span>
+                        </div>
+                        <button class="btn-add-cart" onclick="addToCart('Family Pack 5L', 2199)">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                    <div class="product-quick-view" onclick="quickView('Family Pack 5L', 2199, '5 Litre')">
+                        <i class="fas fa-eye"></i> Quick View
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="benefits-section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag"><i class="fas fa-heart"></i> Why Choose Us</span>
+                <h2 class="section-title">Health <span class="text-gradient">Benefits</span></h2>
+                <p class="section-desc">Mustard oil has been a cornerstone of healthy cooking for centuries. Here's why our organic mustard oil is a must-have.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card" data-animate="fade-up" data-delay="0.1">
+                    <div class="benefit-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Heart Healthy</h3>
+                    <p>Rich in monounsaturated and polyunsaturated fats that help reduce bad cholesterol and promote cardiovascular health.</p>
+                    <div class="benefit-decoration"></div>
+                </div>
+                <div class="benefit-card" data-animate="fade-up" data-delay="0.2">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Boosts Immunity</h3>
+                    <p>Contains glucosinolate, a powerful compound known for its antibacterial & antifungal properties, strengthening your immune system.</p>
+                    <div class="benefit-decoration"></div>
+                </div>
+                <div class="benefit-card" data-animate="fade-up" data-delay="0.3">
+                    <div class="benefit-icon">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <h3>Rich in Antioxidants</h3>
+                    <p>Loaded with Vitamin E and selenium that combat free radicals, slow aging, and protect cells from oxidative damage.</p>
+                    <div class="benefit-decoration"></div>
+                </div>
+                <div class="benefit-card" data-animate="fade-up" data-delay="0.4">
+                    <div class="benefit-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Authentic Traditional Taste</h3>
+                    <p>The unmistakable pungent aroma and rich flavor that defines authentic Indian cooking — a taste that no refined oil can replicate.</p>
+                    <div class="benefit-decoration"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag"><i class="fas fa-quote-left"></i> Testimonials</span>
+                <h2 class="section-title">What Our <span class="text-gradient">Customers</span> Say</h2>
+                <p class="section-desc">Real stories from real people who have made the switch to organic mustard oil.</p>
+            </div>
+            <div class="testimonials-slider" id="testimonialsSlider">
+                <div class="testimonial-track" id="testimonialTrack">
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"Best mustard oil I've ever used for cooking. The aroma is incredible and you can truly taste the difference. My family loves it!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">RS</div>
+                            <div class="author-info">
+                                <h4>Rajesh Sharma</h4>
+                                <span>Home Chef, Delhi</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"Pure and authentic flavor that reminds me of my grandmother's cooking. This is exactly how mustard oil should taste. Highly recommended!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">PD</div>
+                            <div class="author-info">
+                                <h4>Priya Das</h4>
+                                <span>Food Blogger, Kolkata</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"Switched to this organic oil 6 months ago. The quality is unmatched. I use it for cooking, hair care, and massage. Complete value for money!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">AM</div>
+                            <div class="author-info">
+                                <h4>Anita Mishra</h4>
+                                <span>Wellness Coach, Lucknow</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p class="testimonial-text">"We've been buying the Family Pack every month. The cold-pressed quality is evident. Great for traditional Bengali recipes!"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">SK</div>
+                            <div class="author-info">
+                                <h4>Sunil Kumar</h4>
+                                <span>Restaurant Owner, Patna</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <button class="slider-btn prev" id="prevBtn" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                    <div class="slider-dots" id="sliderDots"></div>
+                    <button class="slider-btn next" id="nextBtn" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact / Order Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-tag"><i class="fas fa-envelope"></i> Get In Touch</span>
+                <h2 class="section-title">Order & <span class="text-gradient">Contact</span></h2>
+                <p class="section-desc">Have questions or want to place a bulk order? We'd love to hear from you.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-form-wrap" data-animate="fade-right">
+                    <form class="contact-form" id="contactForm" onsubmit="handleFormSubmit(event)">
+                        <div class="form-group">
+                            <label for="name"><i class="fas fa-user"></i> Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                                <input type="email" id="email" name="email" placeholder="Your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone"><i class="fas fa-phone"></i> Phone</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+91 XXXXXXXXXX">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="message"><i class="fas fa-comment"></i> Message</label>
+                            <textarea id="message" name="message" placeholder="Your message or order details..." rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+                <div class="contact-info-wrap" data-animate="fade-left">
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-building"></i></div>
+                        <h3>Company</h3>
+                        <p>Nextera Digital E-Commerce</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-globe"></i></div>
+                        <h3>Website</h3>
+                        <a href="https://www.nexteradigitalecommerce.com" target="_blank">www.nexteradigitalecommerce.com</a>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-phone-alt"></i></div>
+                        <h3>Phone</h3>
+                        <a href="tel:+917384666525">+91 7384666525</a>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><i class="fas fa-file-invoice"></i></div>
+                        <h3>GSTIN</h3>
+                        <p>19GTSPR3273P1ZC</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <span class="logo-icon"><i class="fas fa-seedling"></i></span>
+                        <span class="logo-text">Pure<span class="logo-highlight">Harvest</span></span>
+                    </a>
+                    <p>Bringing you the purest organic mustard oil, straight from nature's bounty to your kitchen. Taste the tradition.</p>
+                    <div class="footer-socials">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Quick Links</h4>
+                    <a href="#home">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#products">Shop</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Products</h4>
+                    <a href="#products">500ml Bottle</a>
+                    <a href="#products">1 Litre Bottle</a>
+                    <a href="#products">Family Pack</a>
+                    <a href="#products">Bulk Orders</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Support</h4>
+                    <a href="#contact">Contact Us</a>
+                    <a href="#">Shipping Info</a>
+                    <a href="#">Return Policy</a>
+                    <a href="#">FAQs</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PureHarvest by Nextera Digital E-Commerce. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Quick View Modal -->
+    <div class="modal-overlay" id="quickViewModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <div class="bottle-3d-placeholder large">
+                        <i class="fas fa-wine-bottle"></i>
+                        <span id="modalSize">500ml</span>
+                    </div>
+                </div>
+                <div class="modal-info">
+                    <h2 id="modalName">Product Name</h2>
+                    <div class="modal-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="modal-desc">100% Pure Organic Cold-Pressed Mustard Oil. Rich in Omega 3 & 6 fatty acids. Perfect for cooking, hair care, and body massage.</p>
+                    <div class="modal-price">
+                        <span id="modalPrice">₹299</span>
+                    </div>
+                    <div class="modal-features">
+                        <div><i class="fas fa-check"></i> Cold Pressed</div>
+                        <div><i class="fas fa-check"></i> 100% Organic</div>
+                        <div><i class="fas fa-check"></i> No Chemicals</div>
+                        <div><i class="fas fa-check"></i> FSSAI Approved</div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" id="modalCartBtn">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-bag"></i> Your Cart</h3>
+            <button class="cart-close" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <i class="fas fa-shopping-basket"></i>
+                <p>Your cart is empty</p>
+            </div>
+        </div>
+        <div class="cart-footer" id="cartFooter" style="display:none;">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">₹0</span>
+            </div>
+            <button class="btn btn-primary btn-full" onclick="checkout()">
+                <i class="fas fa-lock"></i> Proceed to Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Item added to cart!</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
